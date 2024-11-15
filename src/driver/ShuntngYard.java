@@ -37,10 +37,39 @@ public class ShuntngYard {
     //input: the math expression as a string
     //parsed result will stored in Token list
 	public static TokenList ParseFromExp(String exp) {
-		TokenList lst = new TokenList();
-		/*
-		 * to do
-		 */
+		TokenList lst = new TokenList(); //doubly linked list
+		
+		//c could either be a number or an operator
+		//if c is an operator, we create a node and append to the list
+		//if c is a number, we need to check if the previous char is a number (to make multi-digit numbers)
+		//
+		String curValue = "";
+		for(char c: exp.toCharArray()) 
+		{
+			if(Operators.indexOf(c) > -1)//this is a valid operator
+			{
+				if(!curValue.isEmpty())
+				{
+					Node<String> num = new Node(curValue);
+					lst.Append(num);
+					curValue = "";
+				}
+				Node<String> node = new Node(String.format("%c", c)); //same thing as c + ""
+				lst.Append(node);
+			}
+			
+			else if(Numbers.indexOf(c) > -1) //this is a number
+			{
+				curValue += c; //Concatenate
+			}
+		}
+		
+		if(!curValue.isEmpty())
+		{
+			Node<String> num = new Node(curValue);
+			lst.Append(num);
+		}
+		
 		return lst;
 	}
 	
